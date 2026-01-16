@@ -1,65 +1,299 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { motion } from 'framer-motion';
+import {
+  CreditCard, AlertCircle, Wallet, TrendingUp,
+  Plus, Bell, Settings, Sparkles, RefreshCw,
+  Apple, Smartphone
+} from 'lucide-react';
+import {
+  StatCard, AlertCard, SubscriptionCard,
+  AccountCard, CategoryBreakdown
+} from '@/components';
+import {
+  sampleAccounts, sampleSubscriptions, sampleAlerts,
+  getTotalMonthlySpend, getSpendByCategory, getSpendByAccount,
+  getUnacknowledgedAlerts, getAccountById, getSubscriptionsByAccount
+} from '@/lib/sample-data';
+import { useState } from 'react';
+
+// Card color mapping for accounts
+const accountColors: Record<string, 'gold' | 'blue' | 'silver' | 'purple'> = {
+  'American Express': 'gold',
+  'Chase': 'blue',
+  'Capital One': 'silver',
+  'PayPal': 'purple',
+  'Apple': 'silver',
+  'Google': 'blue',
+};
+
+export default function Dashboard() {
+  const [alerts, setAlerts] = useState(sampleAlerts);
+
+  const totalSpend = getTotalMonthlySpend();
+  const categorySpend = getSpendByCategory();
+  const accountSpend = getSpendByAccount();
+  const unacknowledgedAlerts = alerts.filter(a => !a.acknowledged);
+  const activeSubscriptions = sampleSubscriptions.filter(s => s.status === 'active');
+
+  const handleAcknowledgeAlert = (id: string) => {
+    setAlerts(prev => prev.map(a => a.id === id ? { ...a, acknowledged: true } : a));
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen gradient-mesh">
+      {/* Header */}
+      <header className="sticky top-0 z-50 glass border-b border-white/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <motion.div
+                className="p-2 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg"
+                whileHover={{ rotate: 10, scale: 1.1 }}
+              >
+                <Sparkles className="w-6 h-6 text-white" />
+              </motion.div>
+              <div>
+                <h1 className="text-xl font-bold gradient-text">SubTrack</h1>
+                <p className="text-xs text-slate-500">Subscription Intelligence</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 rounded-xl hover:bg-white/50 transition-colors relative"
+              >
+                <Bell className="w-5 h-5 text-slate-600" />
+                {unacknowledgedAlerts.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 rounded-full text-xs text-white flex items-center justify-center font-bold">
+                    {unacknowledgedAlerts.length}
+                  </span>
+                )}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 rounded-xl hover:bg-white/50 transition-colors"
+              >
+                <Settings className="w-5 h-5 text-slate-600" />
+              </motion.button>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hero Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <h2 className="text-3xl font-bold text-slate-900">
+            Good afternoon! 👋
+          </h2>
+          <p className="mt-1 text-slate-600">
+            Here&apos;s your subscription overview for January 2026
+          </p>
+        </motion.div>
+
+        {/* Alerts Section */}
+        {unacknowledgedAlerts.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <div className="flex items-center gap-2 mb-4">
+              <AlertCircle className="w-5 h-5 text-rose-500" />
+              <h3 className="text-lg font-semibold text-slate-900">Attention Needed</h3>
+              <span className="badge badge-danger">{unacknowledgedAlerts.length} alerts</span>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              {unacknowledgedAlerts.map(alert => {
+                const subscription = sampleSubscriptions.find(s => s.id === alert.subscription_id);
+                return (
+                  <AlertCard
+                    key={alert.id}
+                    alert={alert}
+                    subscriptionName={subscription?.normalized_name}
+                    onAcknowledge={handleAcknowledgeAlert}
+                  />
+                );
+              })}
+            </div>
+          </motion.section>
+        )}
+
+        {/* Stats Grid */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <StatCard
+            title="Monthly Recurring"
+            value={`$${totalSpend.toFixed(2)}`}
+            subtitle="across all sources"
+            icon={Wallet}
+            color="indigo"
+            trend="up"
+            trendValue="+$8.00 vs last month"
+          />
+          <StatCard
+            title="Active Subscriptions"
+            value={activeSubscriptions.length}
+            subtitle="tracked services"
+            icon={CreditCard}
+            color="pink"
+          />
+          <StatCard
+            title="Yearly Projection"
+            value={`$${(totalSpend * 12).toFixed(0)}`}
+            subtitle="estimated annual spend"
+            icon={TrendingUp}
+            color="green"
+          />
+          <StatCard
+            title="Sources Connected"
+            value={sampleAccounts.length}
+            subtitle="cards & app stores"
+            icon={Smartphone}
+            color="purple"
+          />
+        </section>
+
+        {/* Account Cards (Credit Cards + App Stores) */}
+        <section className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-slate-900">Your Sources</h3>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn btn-secondary text-sm"
+            >
+              <Plus className="w-4 h-4" />
+              Add Source
+            </motion.button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {accountSpend
+              .filter(({ total }) => total > 0)
+              .map(({ account, total }) => (
+                <AccountCard
+                  key={account.id}
+                  name={account.name}
+                  institution={account.institution}
+                  mask={account.mask || (account.type === 'app_store' ? '📱' : '')}
+                  total={total}
+                  subscriptionCount={getSubscriptionsByAccount(account.id).length}
+                  color={accountColors[account.institution] || 'silver'}
+                />
+              ))}
+          </div>
+        </section>
+
+        {/* Two Column Layout */}
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Subscriptions List */}
+          <section className="lg:col-span-2">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-slate-900">All Subscriptions</h3>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn btn-secondary text-sm"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Sync Now
+              </motion.button>
+            </div>
+
+            <div className="space-y-3">
+              {activeSubscriptions.map((subscription, index) => {
+                const account = getAccountById(subscription.account_id);
+                return (
+                  <motion.div
+                    key={subscription.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.03 }}
+                  >
+                    <SubscriptionCard
+                      subscription={subscription}
+                      accountName={account?.name}
+                    />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Category Breakdown */}
+          <aside>
+            <CategoryBreakdown data={categorySpend} total={totalSpend} />
+
+            {/* Subscription Sources Info */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="card p-6 mt-4"
+            >
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Supported Sources</h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="p-2 rounded-lg bg-blue-50">
+                    <CreditCard className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-slate-700">Credit Cards</p>
+                    <p className="text-xs text-slate-500">Via Plaid (Visa, Amex, etc.)</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="p-2 rounded-lg bg-slate-100">
+                    <Apple className="w-4 h-4 text-slate-700" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-slate-700">Apple App Store</p>
+                    <p className="text-xs text-slate-500">Via App Store Connect API</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="p-2 rounded-lg bg-green-50">
+                    <Smartphone className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-slate-700">Google Play Store</p>
+                    <p className="text-xs text-slate-500">Via Google Play Developer API</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="p-2 rounded-lg bg-indigo-50">
+                    <Wallet className="w-4 h-4 text-indigo-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-slate-700">PayPal</p>
+                    <p className="text-xs text-slate-500">Via PayPal Subscriptions API</p>
+                  </div>
+                </div>
+              </div>
+              <p className="mt-4 text-xs text-slate-500 italic">
+                💡 Coming soon: Stripe, Venmo, Bank Accounts
+              </p>
+            </motion.div>
+          </aside>
         </div>
       </main>
+
+      {/* Floating Action Button - Mobile */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="fixed bottom-6 right-6 lg:hidden btn btn-primary p-4 rounded-full shadow-xl"
+      >
+        <Plus className="w-6 h-6" />
+      </motion.button>
     </div>
   );
 }
