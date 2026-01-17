@@ -6,8 +6,7 @@ import {
     Tv, Music, Code, ShoppingBag, Cloud, Newspaper,
     Dumbbell, Gamepad2
 } from 'lucide-react';
-import { Navbar } from '@/components/Navbar';
-import { SubscriptionCard } from '@/components/SubscriptionCard';
+import { Navbar, SubscriptionTable } from '@/components';
 import {
     sampleSubscriptions, sampleAlerts, getAccountById
 } from '@/lib/sample-data';
@@ -126,8 +125,8 @@ export default function SubscriptionsPage() {
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() => setSelectedCategory(category.name)}
                                     className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all ${isActive
-                                            ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-200'
-                                            : 'bg-white text-slate-600 border border-slate-200 hover:border-indigo-300'
+                                        ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-200'
+                                        : 'bg-white text-slate-600 border border-slate-200 hover:border-indigo-300'
                                         }`}
                                 >
                                     <category.icon className="w-4 h-4" />
@@ -145,25 +144,10 @@ export default function SubscriptionsPage() {
                     transition={{ delay: 0.2 }}
                     className="space-y-3"
                 >
-                    {filteredSubscriptions.map((subscription, index) => {
-                        const account = getAccountById(subscription.account_id);
-                        return (
-                            <motion.div
-                                key={subscription.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.03 }}
-                            >
-                                <SubscriptionCard
-                                    subscription={subscription}
-                                    accountName={account?.name}
-                                />
-                            </motion.div>
-                        );
-                    })}
-
-                    {filteredSubscriptions.length === 0 && (
-                        <div className="card p-12 text-center">
+                    {filteredSubscriptions.length > 0 ? (
+                        <SubscriptionTable subscriptions={filteredSubscriptions} />
+                    ) : (
+                        <div className="card p-12 text-center bg-white border border-dashed border-slate-300">
                             <p className="text-slate-500">No subscriptions found</p>
                             <p className="text-sm text-slate-400 mt-1">Try adjusting your filters</p>
                         </div>
