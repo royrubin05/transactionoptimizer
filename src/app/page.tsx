@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import {
   CreditCard, AlertCircle, TrendingUp,
   Plus, Sparkles, Filter, MoreHorizontal,
-  ChevronRight, ArrowRight
+  ChevronRight, ArrowRight, Wallet, Zap, Calendar
 } from 'lucide-react';
 import { Navbar, SubscriptionTable } from '@/components';
 import {
@@ -22,170 +22,178 @@ export default function Dashboard() {
   const activeSubscriptions = sampleSubscriptions.filter(s => s.status === 'active');
 
   return (
-    <div className="min-h-screen bg-slate-50/50">
+    <div className="min-h-screen pb-20">
       <Navbar alertCount={unacknowledgedAlerts.length} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        {/* Top Summary Stats - Very Compact */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-4 flex flex-col justify-between h-28">
-            <div className="flex items-center justify-between text-slate-500 text-sm font-medium">
-              <span>Total Monthly</span>
-              <TrendingUp className="w-4 h-4 text-emerald-500" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-slate-900">${totalSpend.toFixed(2)}</div>
-              <div className="text-xs text-emerald-600 mt-1 flex items-center gap-1">
-                <span className="bg-emerald-50 px-1 rounded">+3.2%</span> vs last month
+        {/* Fun Greeting Header */}
+        <div className="mb-8 pl-1">
+          <h1 className="text-3xl font-black text-slate-800 tracking-tight">
+            Here's the scoop <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500">for January</span> 🍦
+          </h1>
+          <p className="text-slate-500 font-medium mt-2">You're tracking 15 subscriptions like a pro.</p>
+        </div>
+
+        {/* Fun Stats Cards - Bouncy & Colorful */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <motion.div whileHover={{ y: -5 }} className="bg-white rounded-3xl p-5 shadow-lg shadow-indigo-100 border border-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-100 rounded-full blur-2xl -mr-10 -mt-10 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-2 bg-emerald-100 text-emerald-600 rounded-xl">
+                  <Wallet className="w-5 h-5" />
+                </div>
+                <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">Monthly</span>
               </div>
+              <div className="text-3xl font-black text-slate-800">${totalSpend.toFixed(2)}</div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-4 flex flex-col justify-between h-28">
-            <div className="flex items-center justify-between text-slate-500 text-sm font-medium">
-              <span>Active Subs</span>
-              <div className="w-2 h-2 rounded-full bg-indigo-500"></div>
+          <motion.div whileHover={{ y: -5 }} className="bg-white rounded-3xl p-5 shadow-lg shadow-purple-100 border border-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-purple-100 rounded-full blur-2xl -mr-10 -mt-10 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-2 bg-purple-100 text-purple-600 rounded-xl">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">Active</span>
+              </div>
+              <div className="text-3xl font-black text-slate-800">{activeSubscriptions.length}</div>
             </div>
-            <div>
-              <div className="text-2xl font-bold text-slate-900">{activeSubscriptions.length}</div>
-              <div className="text-xs text-slate-400 mt-1">Across {sampleAccounts.length} sources</div>
-            </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-4 flex flex-col justify-between h-28">
-            <div className="flex items-center justify-between text-slate-500 text-sm font-medium">
-              <span>Yearly Forecast</span>
+          <motion.div whileHover={{ y: -5 }} className="bg-white rounded-3xl p-5 shadow-lg shadow-blue-100 border border-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-100 rounded-full blur-2xl -mr-10 -mt-10 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-2 bg-blue-100 text-blue-600 rounded-xl">
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">Yearly</span>
+              </div>
+              <div className="text-3xl font-black text-slate-800">${(totalSpend * 12).toLocaleString()}</div>
             </div>
-            <div>
-              <div className="text-2xl font-bold text-slate-900">${(totalSpend * 12).toLocaleString()}</div>
-              <div className="text-xs text-slate-400 mt-1">Estimated annual</div>
-            </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-slate-50 hover:bg-white border-2 border-dashed border-slate-200 hover:border-indigo-300 rounded-xl p-4 flex flex-col justify-center items-center h-28 transition-colors cursor-pointer group">
-            <div className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
-              <Plus className="w-5 h-5 text-indigo-600" />
+          <motion.button
+            whileHover={{ scale: 1.02, rotate: 1 }}
+            whileTap={{ scale: 0.98 }}
+            className="bg-slate-100 hover:bg-slate-200 border-2 border-dashed border-slate-300 rounded-3xl p-5 flex flex-col items-center justify-center text-slate-500 hover:text-indigo-600 transition-colors cursor-pointer group"
+          >
+            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 group-hover:scale-110 transition-transform">
+              <Plus className="w-6 h-6" />
             </div>
-            <span className="text-xs font-semibold text-slate-600 mt-2">Connect New Source</span>
-          </div>
+            <span className="font-bold text-sm">Add Source</span>
+          </motion.button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
           {/* Main Content Area - Table */}
-          <div className="lg:col-span-8 space-y-6">
+          <div className="lg:col-span-8 space-y-8">
 
-            {/* Alerts Banner (Compact) */}
+            {/* Alerts Banner (Playful) */}
             {unacknowledgedAlerts.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-orange-50 border border-orange-100 rounded-lg p-3 flex items-start gap-3"
+                className="bg-gradient-to-r from-orange-50 to-rose-50 border border-orange-100 rounded-3xl p-4 flex items-center gap-4 shadow-sm"
               >
-                <AlertCircle className="w-5 h-5 text-orange-600 shrink-0 mt-0.5" />
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-2xl">
+                  🚨
+                </div>
                 <div className="flex-1">
-                  <h4 className="text-sm font-semibold text-orange-900">Attention Needed ({unacknowledgedAlerts.length})</h4>
-                  <div className="mt-1 space-y-1">
-                    {unacknowledgedAlerts.map(alert => (
-                      <div key={alert.id} className="text-xs text-orange-800 flex justify-between items-center group cursor-pointer hover:bg-orange-100/50 p-1 rounded transition-colors">
-                        <span>{alert.message}</span>
-                        <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </div>
-                    ))}
+                  <h4 className="text-sm font-black text-slate-800">Heads up!</h4>
+                  <div className="text-sm text-slate-600 mt-0.5">
+                    {unacknowledgedAlerts.length} updates need your attention. <span className="underline decoration-orange-300 font-bold cursor-pointer">Start fixing</span>
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {/* List Header */}
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-slate-900">Active Subscriptions</h3>
-              <div className="flex gap-2">
-                <button className="inline-flex items-center px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-                  <Filter className="w-3 h-3 mr-1" /> Filter
-                </button>
-                <button className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-medium hover:bg-slate-800 transition-colors">
-                  Export
-                </button>
+            <div>
+              {/* Header with Pill Buttons */}
+              <div className="flex items-center justify-between mb-6 px-1">
+                <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+                  <span className="w-2 h-8 bg-indigo-500 rounded-full"></span>
+                  Active Subscriptions
+                </h3>
+                <div className="flex gap-2">
+                  <button className="px-4 py-2 rounded-full bg-white border border-slate-200 text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors shadow-sm cursor-pointer">
+                    Filter
+                  </button>
+                  <button className="px-4 py-2 rounded-full bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-colors shadow-lg shadow-slate-200 cursor-pointer">
+                    Export
+                  </button>
+                </div>
               </div>
-            </div>
 
-            {/* Dense Data Table */}
-            <SubscriptionTable subscriptions={activeSubscriptions} />
+              {/* Verified 'Fun' Table */}
+              <SubscriptionTable subscriptions={activeSubscriptions} />
+            </div>
           </div>
 
           {/* Sidebar - Comparison & Sources */}
           <div className="lg:col-span-4 space-y-6">
 
-            {/* Quick Actions / Sources Summary */}
-            <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-5">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-slate-900">Connected Sources</h3>
-                <Link href="/accounts" className="text-xs text-indigo-600 font-medium hover:underline">Manage</Link>
+            {/* Sources List - Card Style */}
+            <div className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 p-6 border border-white">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-bold text-slate-800 text-lg">Your Wallet</h3>
+                <Link href="/accounts" className="text-sm font-bold text-indigo-500 hover:text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full transition-colors">Manage</Link>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {sampleAccounts.map(account => (
-                  <div key={account.id} className="flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer group">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs shadow-sm
+                  <motion.div
+                    key={account.id}
+                    whileHover={{ x: 5 }}
+                    className="flex items-center justify-between group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-8 rounded-lg shadow-md flex items-center justify-center text-white text-[10px] font-bold tracking-widest relative overflow-hidden
                         ${account.institution === 'Chase' ? 'bg-blue-600' :
                           account.institution === 'American Express' ? 'bg-amber-500' :
                             account.type === 'app_store' ? 'bg-slate-800' : 'bg-indigo-500'}`}
                       >
-                        {account.institution.substring(0, 1)}
+                        <div className="absolute top-0 left-0 w-full h-[1px] bg-white/30"></div>
+                        {/* Card Chip Simulation */}
+                        <div className="absolute top-1/2 left-1 transform -translate-y-1/2 w-1.5 h-1 bg-yellow-200 rounded-sm opacity-80"></div>
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-slate-900">{account.name}</div>
-                        <div className="text-[10px] text-slate-500">
+                        <div className="text-sm font-bold text-slate-800">{account.name}</div>
+                        <div className="text-[11px] font-semibold text-slate-400">
                           {account.mask ? `•••• ${account.mask}` : 'Connected'}
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      {/* Placeholder for spend per source logic if needed */}
-                      <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-slate-600" />
-                    </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
 
-            {/* Spend by Category Mini-Chart */}
-            <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-5">
-              <h3 className="font-semibold text-slate-900 mb-4">Top Categories</h3>
-              <div className="space-y-4">
-                {Object.entries(getSpendByCategory()).slice(0, 5).map(([cat, amount], idx) => (
-                  <div key={cat}>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="font-medium text-slate-700">{cat}</span>
-                      <span className="text-slate-500">${amount.toFixed(2)}</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${['bg-indigo-500', 'bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-rose-500'][idx % 5]}`}
-                        style={{ width: `${(amount / totalSpend) * 100}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Fun AI Insights Card */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="p-6 rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white relative overflow-hidden shadow-xl shadow-indigo-200 cursor-pointer"
+            >
+              <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/30 rounded-full blur-2xl"></div>
 
-            {/* Link to full report */}
-            <div className="p-4 bg-indigo-900 rounded-xl text-white relative overflow-hidden group cursor-pointer shadow-lg shadow-indigo-900/20">
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <Sparkles className="w-24 h-24" />
+              <div className="relative z-10">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-inner border border-white/10">
+                  ✨
+                </div>
+                <h4 className="font-black text-xl mb-2">Gemini Found Savings</h4>
+                <p className="text-indigo-100 text-sm font-medium mb-4 leading-relaxed">
+                  We found 2 subscriptions you might not need anymore. Save <span className="font-bold text-white bg-indigo-500/50 px-1 py-0.5 rounded">~${(totalSpend * 0.1).toFixed(0)}/mo</span> instantly.
+                </p>
+                <button className="w-full py-3 bg-white text-indigo-600 font-bold rounded-xl hover:bg-indigo-50 transition-colors text-sm shadow-md">
+                  Reveal Insights
+                </button>
               </div>
-              <h4 className="font-bold mb-1 relative z-10">AI Insights</h4>
-              <p className="text-xs text-indigo-200 mb-3 relative z-10 w-3/4">
-                Gemini found 2 ways to save ~${(totalSpend * 0.1).toFixed(0)}/mo on your subscriptions.
-              </p>
-              <div className="flex items-center text-xs font-bold text-indigo-200 group-hover:text-white transition-colors">
-                View Report <ArrowRight className="w-3 h-3 ml-1" />
-              </div>
-            </div>
+            </motion.div>
 
           </div>
         </div>

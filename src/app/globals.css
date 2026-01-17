@@ -1,17 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #fdfbf7;
+  /* Warm off-white, less sterile than Slate-50 */
+  --foreground: #1e1b4b;
+  /* Deep Indigo, softer than black */
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
-/* 
-  Keeping it extremely simple to ensure Tailwind loads.
-  Moving complex component styles to the components themselves (React).
-*/
+/* Fun Background Gradient Mesh */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(255, 100, 100, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(100, 100, 255, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(100, 255, 200, 0.08) 0px, transparent 50%);
+  z-index: -1;
+  pointer-events: none;
+}

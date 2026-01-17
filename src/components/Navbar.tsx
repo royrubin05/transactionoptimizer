@@ -26,7 +26,7 @@ export function Navbar({ alertCount = 0 }: NavbarProps) {
 
     return (
         <>
-            <header className="sticky top-0 z-50 glass border-b border-white/20">
+            <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-white/20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
@@ -53,8 +53,8 @@ export function Navbar({ alertCount = 0 }: NavbarProps) {
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
                                             className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${isActive
-                                                    ? 'bg-indigo-100 text-indigo-700 font-medium'
-                                                    : 'text-slate-600 hover:bg-white/50'
+                                                ? 'bg-indigo-100 text-indigo-700 font-medium'
+                                                : 'text-slate-600 hover:bg-white/50'
                                                 }`}
                                         >
                                             <item.icon className="w-4 h-4" />
@@ -139,8 +139,8 @@ export function Navbar({ alertCount = 0 }: NavbarProps) {
                                                 <motion.div
                                                     whileTap={{ scale: 0.98 }}
                                                     className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive
-                                                            ? 'bg-indigo-100 text-indigo-700 font-medium'
-                                                            : 'text-slate-600 hover:bg-slate-50'
+                                                        ? 'bg-indigo-100 text-indigo-700 font-medium'
+                                                        : 'text-slate-600 hover:bg-slate-50'
                                                         }`}
                                                 >
                                                     <item.icon className="w-5 h-5" />
