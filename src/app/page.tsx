@@ -29,7 +29,7 @@ export default function Dashboard() {
 
         {/* Top Summary Stats - Very Compact */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="panel p-4 flex flex-col justify-between h-28">
+          <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-4 flex flex-col justify-between h-28">
             <div className="flex items-center justify-between text-slate-500 text-sm font-medium">
               <span>Total Monthly</span>
               <TrendingUp className="w-4 h-4 text-emerald-500" />
@@ -42,7 +42,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="panel p-4 flex flex-col justify-between h-28">
+          <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-4 flex flex-col justify-between h-28">
             <div className="flex items-center justify-between text-slate-500 text-sm font-medium">
               <span>Active Subs</span>
               <div className="w-2 h-2 rounded-full bg-indigo-500"></div>
@@ -53,7 +53,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="panel p-4 flex flex-col justify-between h-28">
+          <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-4 flex flex-col justify-between h-28">
             <div className="flex items-center justify-between text-slate-500 text-sm font-medium">
               <span>Yearly Forecast</span>
             </div>
@@ -63,7 +63,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="panel p-4 flex flex-col justify-center items-center h-28 border-dashed border-2 bg-slate-50 hover:bg-white hover:border-indigo-300 transition-colors cursor-pointer group">
+          <div className="bg-slate-50 hover:bg-white border-2 border-dashed border-slate-200 hover:border-indigo-300 rounded-xl p-4 flex flex-col justify-center items-center h-28 transition-colors cursor-pointer group">
             <div className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
               <Plus className="w-5 h-5 text-indigo-600" />
             </div>
@@ -102,10 +102,10 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold text-slate-900">Active Subscriptions</h3>
               <div className="flex gap-2">
-                <button className="btn btn-secondary text-xs">
-                  <Filter className="w-3 h-3" /> Filter
+                <button className="inline-flex items-center px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                  <Filter className="w-3 h-3 mr-1" /> Filter
                 </button>
-                <button className="btn btn-primary text-xs">
+                <button className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-medium hover:bg-slate-800 transition-colors">
                   Export
                 </button>
               </div>
@@ -119,7 +119,7 @@ export default function Dashboard() {
           <div className="lg:col-span-4 space-y-6">
 
             {/* Quick Actions / Sources Summary */}
-            <div className="panel p-5">
+            <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-slate-900">Connected Sources</h3>
                 <Link href="/accounts" className="text-xs text-indigo-600 font-medium hover:underline">Manage</Link>
@@ -153,7 +153,7 @@ export default function Dashboard() {
             </div>
 
             {/* Spend by Category Mini-Chart */}
-            <div className="panel p-5">
+            <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-5">
               <h3 className="font-semibold text-slate-900 mb-4">Top Categories</h3>
               <div className="space-y-4">
                 {Object.entries(getSpendByCategory()).slice(0, 5).map(([cat, amount], idx) => (
@@ -174,7 +174,7 @@ export default function Dashboard() {
             </div>
 
             {/* Link to full report */}
-            <div className="p-4 bg-indigo-900 rounded-xl text-white relative overflow-hidden group cursor-pointer">
+            <div className="p-4 bg-indigo-900 rounded-xl text-white relative overflow-hidden group cursor-pointer shadow-lg shadow-indigo-900/20">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Sparkles className="w-24 h-24" />
               </div>

@@ -2,8 +2,7 @@
 
 import { motion } from 'framer-motion';
 import {
-    ArrowUpDown, MoreHorizontal, AlertCircle,
-    ExternalLink, Calendar, CreditCard, Tag
+    ArrowUpDown, MoreHorizontal, CreditCard, Tag
 } from 'lucide-react';
 import { Subscription } from '@/lib/supabase';
 import { useState } from 'react';
@@ -43,29 +42,31 @@ export function SubscriptionTable({ subscriptions }: SubscriptionTableProps) {
     return (
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
-                <table className="data-table">
+                <table className="w-full border-collapse text-left">
                     <thead>
-                        <tr>
-                            <th className="w-[30%] cursor-pointer group" onClick={() => handleSort('normalized_name')}>
+                        <tr className="border-[1px] border-slate-200">
+                            <th className="bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider cursor-pointer group border-b border-slate-200" onClick={() => handleSort('normalized_name')}>
                                 Service <SortIcon active={sortKey === 'normalized_name'} />
                             </th>
-                            <th className="w-[15%] cursor-pointer group" onClick={() => handleSort('category')}>
+                            <th className="bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider cursor-pointer group border-b border-slate-200" onClick={() => handleSort('category')}>
                                 Category <SortIcon active={sortKey === 'category'} />
                             </th>
-                            <th className="w-[15%] cursor-pointer group text-right" onClick={() => handleSort('typical_amount')}>
+                            <th className="bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider cursor-pointer group text-right border-b border-slate-200" onClick={() => handleSort('typical_amount')}>
                                 Cost <SortIcon active={sortKey === 'typical_amount'} />
                             </th>
-                            <th className="w-[15%] cursor-pointer group" onClick={() => handleSort('billing_cycle')}>
+                            <th className="bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider cursor-pointer group border-b border-slate-200" onClick={() => handleSort('billing_cycle')}>
                                 Frequency <SortIcon active={sortKey === 'billing_cycle'} />
                             </th>
-                            <th className="w-[15%] cursor-pointer group" onClick={() => handleSort('next_expected')}>
+                            <th className="bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider cursor-pointer group border-b border-slate-200" onClick={() => handleSort('next_expected')}>
                                 Next Charge <SortIcon active={sortKey === 'next_expected'} />
                             </th>
-                            <th className="w-[10%]">Actions</th>
+                            <th className="bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">
+                                Actions
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedSubs.map((sub) => {
+                        {sortedSubs.map((sub, index) => {
                             const account = getAccountById(sub.account_id);
                             const isHighCost = sub.typical_amount > 50;
                             const daysUntil = Math.ceil((new Date(sub.next_expected).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
@@ -77,10 +78,10 @@ export function SubscriptionTable({ subscriptions }: SubscriptionTableProps) {
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.2 }}
+                                    className="hover:bg-slate-50 border-b border-slate-100 last:border-0 group"
                                 >
-                                    <td>
+                                    <td className="px-4 py-3 align-middle">
                                         <div className="flex items-center gap-3">
-                                            {/* Placeholder Icon */}
                                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white bg-gradient-to-br
                         ${sub.normalized_name.startsWith('A') ? 'from-blue-500 to-indigo-600' :
                                                     sub.normalized_name.startsWith('N') ? 'from-red-500 to-rose-600' :
@@ -98,32 +99,32 @@ export function SubscriptionTable({ subscriptions }: SubscriptionTableProps) {
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        <span className="badge badge-gray gap-1">
-                                            <Tag className="w-3 h-3" />
+                                    <td className="px-4 py-3 align-middle">
+                                        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                            <Tag className="w-3 h-3 mr-1" />
                                             {sub.category}
                                         </span>
                                     </td>
-                                    <td className="text-right font-medium font-mono text-slate-700">
+                                    <td className="px-4 py-3 align-middle text-right font-medium font-mono text-slate-700">
                                         ${sub.typical_amount.toFixed(2)}
                                     </td>
-                                    <td>
+                                    <td className="px-4 py-3 align-middle">
                                         <span className="text-sm text-slate-600 capitalize">{sub.billing_cycle}</span>
                                     </td>
-                                    <td>
+                                    <td className="px-4 py-3 align-middle">
                                         <div className="flex items-center gap-2">
                                             <span className={`text-sm ${isSoon ? 'text-amber-600 font-medium' : 'text-slate-600'}`}>
                                                 {new Date(sub.next_expected).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                             </span>
                                             {isSoon && (
-                                                <span className="badge badge-red text-[10px] px-1.5">
+                                                <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-medium bg-red-50 text-red-600 border border-red-200">
                                                     Soon
                                                 </span>
                                             )}
                                         </div>
                                     </td>
-                                    <td>
-                                        <button className="btn-ghost p-2 rounded-lg">
+                                    <td className="px-4 py-3 align-middle text-center">
+                                        <button className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors">
                                             <MoreHorizontal className="w-4 h-4" />
                                         </button>
                                     </td>
