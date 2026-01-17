@@ -4,3 +4,4 @@ export { AlertCard } from './AlertCard';
 export { SubscriptionCard } from './SubscriptionCard';
 export { AccountCard } from './AccountCard';
 export { CategoryBreakdown } from './CategoryBreakdown';
+export { Navbar } from './Navbar';

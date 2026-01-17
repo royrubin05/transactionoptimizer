@@ -3,17 +3,17 @@
 import { motion } from 'framer-motion';
 import {
   CreditCard, AlertCircle, Wallet, TrendingUp,
-  Plus, Bell, Settings, Sparkles, RefreshCw,
+  Plus, Sparkles, RefreshCw,
   Apple, Smartphone
 } from 'lucide-react';
 import {
   StatCard, AlertCard, SubscriptionCard,
-  AccountCard, CategoryBreakdown
+  AccountCard, CategoryBreakdown, Navbar
 } from '@/components';
 import {
   sampleAccounts, sampleSubscriptions, sampleAlerts,
   getTotalMonthlySpend, getSpendByCategory, getSpendByAccount,
-  getUnacknowledgedAlerts, getAccountById, getSubscriptionsByAccount
+  getAccountById, getSubscriptionsByAccount
 } from '@/lib/sample-data';
 import { useState } from 'react';
 
@@ -42,47 +42,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen gradient-mesh">
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass border-b border-white/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <motion.div
-                className="p-2 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg"
-                whileHover={{ rotate: 10, scale: 1.1 }}
-              >
-                <Sparkles className="w-6 h-6 text-white" />
-              </motion.div>
-              <div>
-                <h1 className="text-xl font-bold gradient-text">SubTrack</h1>
-                <p className="text-xs text-slate-500">Subscription Intelligence</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-xl hover:bg-white/50 transition-colors relative"
-              >
-                <Bell className="w-5 h-5 text-slate-600" />
-                {unacknowledgedAlerts.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 rounded-full text-xs text-white flex items-center justify-center font-bold">
-                    {unacknowledgedAlerts.length}
-                  </span>
-                )}
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-xl hover:bg-white/50 transition-colors"
-              >
-                <Settings className="w-5 h-5 text-slate-600" />
-              </motion.button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Navbar alertCount={unacknowledgedAlerts.length} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
